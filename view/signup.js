@@ -16,7 +16,14 @@ async function signup() {
         console.log(obj);
 
         var result = await axios.post('http://localhost:3000/user/signup', obj);
-        console.log(result);
+        //console.log(result);
+
+        if(result.status == 200) {
+            alert("Successfuly signed up")
+        }
+        else {
+            alert("User already exists, Please Login");
+        }
     }
     catch(err) {
         console.log(err);

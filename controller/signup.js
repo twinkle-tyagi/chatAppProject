@@ -1,19 +1,21 @@
 const bcrypt = require('bcrypt');
 
 const User = require('../model/signup');
+const { use } = require('../routes/signup');
 
 exports.postUser = async (req, res, next) => {
     try {
-        // check if user exists
-        const user = User.findAll({where: {email: req.body.email}});
+        const email = req.body.email;
 
-        if(user[0]) {
-            return res.status(500).json({message: "user already exists"});
+        // check if user exists
+        const user = await User.findAll({where: {email: req.body.email}});
+
+        if(user[0] && (user[0].email == email)) {
+            return res.status(403).json({message: "user already exists"});
         }
 
         const name = req.body.name;
         const phone = req.body.phone;
-        const email = req.body.email;
         const password = req.body.password;
 
         const saltRounds = 10;
