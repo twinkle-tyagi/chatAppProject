@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <script src="chat.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+    <style>
+        li {
+            list-style-type: none;
+        }
+    </style>
+
+</head>
+<body>
+    <ul id="chat-ul">
+
+    </ul>
+    <footer style="background-color: blue;">
+        <input type="text" id="chat-text" name="chat-text" style="margin-left: 60px;">
+        <button type="button" id="chat-btn" onclick="chat()"> send </button>
+    </footer>
+</body>
+</html>

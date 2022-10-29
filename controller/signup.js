@@ -55,7 +55,7 @@ exports.login = async (req, res, next) => {
                     throw new Error("something went wrong");
                 }
                 if(result === true) {
-                    res.status(200).json({message: "login successful", token: generateAccessToken(user[0].id)});
+                    res.status(200).json({message: "login successful", token: generateAccessToken(user[0].id), name: user[0].name});
                 }
                 else {
                     return res.status(404).json({message: "password does not match"});
