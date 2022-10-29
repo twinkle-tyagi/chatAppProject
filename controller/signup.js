@@ -1,7 +1,11 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../model/signup');
-const { use } = require('../routes/signup');
+
+function generateAccessToken(id) {
+    return jwt.sign({id: id}, process.env.JWT_SECRET_KEY);
+}
 
 exports.postUser = async (req, res, next) => {
     try {
@@ -35,5 +39,34 @@ exports.postUser = async (req, res, next) => {
     catch(err) {
         console.log(err);
     }
+}
 
+exports.login = async (req, res, next) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const user = await User.findAll({where: {email: email}});
+        console.log("name is",user[0].name);
+
+        if(user.length > 0) {
+            bcrypt.compare(password, user[0].password, (err, result) => {
+                if(err) {
+                    throw new Error("something went wrong");
+                }
+                if(result === true) {
+                    res.status(200).json({message: "login successful", token: generateAccessToken(user[0].id)});
+                }
+                else {
+                    return res.status(404).json({message: "password does not match"});
+                }
+            })
+        }
+        else {
+            return res.status(404).json({message: "email not found"});
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
