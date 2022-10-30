@@ -10,9 +10,9 @@ async function login(e) {
             password
         };
 
-        console.log(obj);
+        //console.log(obj);
 
-        const result = await axios.post('http://localhost:3000/login', obj);
+        const result = await axios.post(`http://localhost:3000/login`, obj);
         console.log(result);
         if(result.status == 200) {
 

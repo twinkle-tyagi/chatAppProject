@@ -6,7 +6,7 @@ const token = localStorage.getItem('token');
 async function chat() {
     try {
         const msg = document.getElementById('chat-text').value;
-        const result = await axios.post('http://localhost:3000/chat', {msg: msg}, {headers: {Authorization: token}});
+        const result = await axios.post(`http://localhost:3000/chat`, {msg: msg}, {headers: {Authorization: token}});
         //console.log(result);
         const name = localStorage.getItem("name");
         
@@ -24,9 +24,9 @@ async function chat() {
 }
 
 function showChat(obj) {
+
     const parent = document.getElementById('chat-ul');
     //const name = localStorage.getItem("name");
-
     const child = document.createElement('li');
 
     
@@ -35,10 +35,16 @@ function showChat(obj) {
     parent.append(child);
 }
 
+
+
 window.addEventListener('DOMContentLoaded', async () => {
+    
+setInterval(async () => {
     try {
-        const chats = await axios.get('http://localhost:3000/chat', {headers: {Authorization: token}});
+        const chats = await axios.get(`http://localhost:3000/chat`, {headers: {Authorization: token}});
         //console.log(chats);
+
+        document.getElementById('chat-ul').innerHTML = "";
         for(let i =0; i< chats.data.length; i++) {
             //console.log("id are", chats.data[i].usersignupId);
             const name = await getUser(chats.data[i].usersignupId);
@@ -54,7 +60,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     catch(err) {
         console.log(err);
     }
+}, 1000);
 });
+
 
 async function getUser(id) {
     try {
