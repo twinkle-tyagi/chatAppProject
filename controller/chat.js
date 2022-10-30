@@ -1,4 +1,5 @@
 const Chat = require('../model/chat');
+const User = require('../model/signup');
 
 exports.getChat = async (req, res, next) => {
     try {
@@ -13,9 +14,11 @@ exports.getChat = async (req, res, next) => {
 
 exports.getUserName = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const user = req.user.findAll({where: {usersignupId: id}});
-        console.log(user);
+        const id = +req.params.id;
+        //console.log("id is ",req.params);
+        const user = await User.findByPk(id);
+        //console.log("name is ", user.name);
+        res.json(user.name);
     }
     catch(err) {
         console.log(err);
