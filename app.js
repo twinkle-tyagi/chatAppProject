@@ -8,8 +8,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const sequelize = require('./util/database');
+const User = require('./model/signup');
+const Chat = require('./model/chat');
 
-const signupRoute = require('./routes/signup');
+const signupRoute = require('./routes/signupRoute');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(signupRoute);
 
+Chat.belongsTo(User);
+User.hasMany(Chat);
 
 sequelize.sync()
 .then(res => {

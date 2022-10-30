@@ -15,8 +15,12 @@ async function login(e) {
         const result = await axios.post('http://localhost:3000/login', obj);
         console.log(result);
         if(result.status == 200) {
+
             localStorage.setItem("name", result.data.name);
+            localStorage.setItem('token', result.data.token);
+
             alert(result.data.message);
+            
             window.location.href = "./chatWindow.html";
         }
         else {
