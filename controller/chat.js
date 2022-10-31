@@ -3,7 +3,9 @@ const User = require('../model/signup');
 
 exports.getChat = async (req, res, next) => {
     try {
-        const chats = await Chat.findAll();
+        const offset = +req.query.msg;
+        console.log("/////////////",offset)
+        const chats = await Chat.findAll({offset: offset});
         //console.log(">>>>>>>>>>>>>>>.",chats);
         res.status(200).json(chats);
     }
@@ -34,7 +36,9 @@ exports.postChat = async (req, res, next) => {
             message: req.user.msg,
             usersignupId: req.user.id
         });
-        res.status(200).json({message: "successful"});
+
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",result)
+        res.status(200).json(result);
 
     }
     catch(err) {
