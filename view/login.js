@@ -21,6 +21,7 @@ async function login(e) {
 
             alert(result.data.message);
             
+            localStorage.setItem('groupId', 0);
             window.location.href = "./chatWindow.html";
         }
         else {

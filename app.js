@@ -10,6 +10,8 @@ dotenv.config();
 const sequelize = require('./util/database');
 const User = require('./model/signup');
 const Chat = require('./model/chat');
+const Group = require('./model/group');
+const ChatGroup = require('./model/chatgroup');
 
 const signupRoute = require('./routes/signupRoute');
 
@@ -21,6 +23,14 @@ app.use(signupRoute);
 
 Chat.belongsTo(User);
 User.hasMany(Chat);
+
+Chat.belongsTo(Group);
+Group.hasMany(Chat);
+
+User.belongsToMany(Group, {through: ChatGroup});
+Group.belongsToMany(User, {through: ChatGroup});
+
+
 
 sequelize.sync()
 .then(res => {

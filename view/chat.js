@@ -1,16 +1,21 @@
 //const { default: axios } = require("axios");
 
-//const { Json } = require("sequelize/types/utils");
+//const { IGNORE } = require("sequelize/types/index-hints");
 
+//const { default: axios } = require("axios");
+
+//const { default: axios } = require("axios");
 
 const token = localStorage.getItem('token');
 
 var chatsArray = [];
+var groupChat = [];
 
 async function chat() {
     try {
+        const groupId = localStorage.getItem('groupId');
         const msg = document.getElementById('chat-text').value;
-        const result = await axios.post(`http://localhost:3000/chat`, {msg: msg}, {headers: {Authorization: token}});
+        const result = await axios.post(`http://localhost:3000/chat/${groupId}`, {msg: msg}, {headers: {Authorization: token}});
         console.log(result);
         const name = localStorage.getItem("name");
         
@@ -47,8 +52,8 @@ function saveToLocal(arr) {
             chatsArray.push(store[i]);
         }
         */
-        chatsArray.concat(store);
-        chatsArray.concat(arr);
+        //chatsArray = chatsArray.concat(store);
+        chatsArray = store.concat(arr);
     }
     localStorage.setItem('chat', JSON.stringify(chatsArray));
     showChat();
@@ -76,9 +81,30 @@ function showChat() {
     parent.append(child);
 }
 
+/*
+setInterval(() => {
+    location.reload();
+}, 7000);
+*/
+
+
 window.addEventListener('DOMContentLoaded', () => {
-    setInterval(() => {
     try {
+        const groupId = localStorage.getItem('groupId');
+
+        getChats(groupId);
+        const gParent = document.getElementById('group-div');
+        grouping(gParent);
+
+    }
+    catch(err) {
+        console.log(err);
+    }
+});
+
+async function getChats(groupId) {
+    try {
+
         const messages = JSON.parse(localStorage.getItem('chat'));
         var lastId;
         console.log(messages);
@@ -90,19 +116,16 @@ window.addEventListener('DOMContentLoaded', () => {
             lastId = +messages[messages.length-1].id;
         }
 
-        getChats(lastId);
+        let arr = [];
+        const chats = await axios.get(`http://localhost:3000/chat/${groupId}/?msg=${lastId}`, {headers: {Authorization: token}});
+        
+        console.log(chats, lastId);
 
-    }
-    catch(err) {
-        console.log(err);
-    }
-}, 1000);
-});
-
-async function getChats(lastId) {
-    try {
-        const chats = await axios.get(`http://localhost:3000/chat/?msg=${lastId}`, {headers: {Authorization: token}});
-        const arr = [];
+        if(chats.data == []) {
+            arr = localStorage.getItem('chat');
+            saveToLocal(arr);
+        }
+        else {
 
         for(let i =0; i< chats.data.length; i++) {
             //console.log("id are", chats.data[i].usersignupId);
@@ -121,57 +144,74 @@ async function getChats(lastId) {
         //console.log("this is arr ", arr)
         saveToLocal(arr)
     }
+    }
     catch(err) {
         console.log(err);
     }
 }
 
-
-/*
-window.addEventListener('DOMContentLoaded', async () => {
-    
-//setInterval(async () => {
+async function grouping(gParent) {
     try {
+        // const 
+        const groups = await axios.get('http://localhost:3000/getAllGroups');
 
-        const messages = JSON.parse(localStorage.getItem('chat'));
-        var lastId;
-        //console.log(lastId);
-
-        if(messages == undefined) {
-            lastId = 0;
-        }
-        else {
-            lastId = +messages[messages.length-1].id;
-        }
-
-        const chats = await axios.get(`http://localhost:3000/chat/?msg=${lastId}`, {headers: {Authorization: token}});
-        //console.log(chats);
-
-        //document.getElementById('chat-ul').innerHTML = "";
-        for(let i =0; i< chats.data.length; i++) {
-            //console.log("id are", chats.data[i].usersignupId);
-
-            const name = await getUser(chats.data[i].usersignupId);
-            const msg = chats.data[i].message;
-            const id = chats.data[i].id;
-
-            const obj = {
-                id: id,
-                msg: msg,
-                name: name
-            }
-            //saveToLocal(obj);
-            //chatsArray.push(obj);
-        }
-        //localStorage.setItem('chat', JSON.stringify(chatsArray));
-        showChat();
+        appendGroup(groups, gParent);
     }
     catch(err) {
         console.log(err);
     }
-//}, 1000);
-});
-*/
+}
+
+function appendGroup(groups, gParent) {
+    for(var i =0; i< groups.data.length; i++) {
+        //console.log(groups.data[i]);
+
+        const gChild = document.createElement('button');
+        gChild.setAttribute('id', groups.data[i].id)
+        gChild.innerHTML = groups.data[i].groupName;
+        gParent.append(gChild);
+    }
+
+    gParent.addEventListener('click', (e) => {
+        const groupId = e.target.id;
+
+
+        localStorage.setItem('groupId', groupId);
+
+        console.log("id is", groupId);
+        joinGroup(groupId);
+    })
+}
+
+async function joinedGroups() {
+    try {
+        var groups = axios.get(`http://localhost:3000/getGroups`, {headers: {Authorization: token}});
+        console.log(groups);
+       
+        const gParent = document.getElementById('user-group-div');
+        gParent.innerHTML = "";
+        grouping(gParent);
+        appendGroup(groups, gParent);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
+
+async function joinGroup(groupId) {
+    try {
+        var group = axios.get(`http://localhost:3000/joingroup/${groupId}`, {headers: {Authorization: token}});
+        
+        localStorage.removeItem('chat');
+        joinedGroups();
+        console.log("/////////////////////////////")
+        getChats(groupId);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
+
 
 async function getUser(id) {
     try {
@@ -182,4 +222,22 @@ async function getUser(id) {
     catch(err) {
         console.log(err);
     }
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = './login.html';
+}
+
+
+async function createGroup() {
+    try {
+        var gName = document.getElementById('group-name').value;
+        console.log(gName);
+        var group = await axios.post('http://localhost:3000/creategroup', {gName}, {headers: {Authorization: token}});
+    }
+    catch(err) {
+        console.log(err);
+    }
+
 }

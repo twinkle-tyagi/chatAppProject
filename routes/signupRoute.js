@@ -13,10 +13,18 @@ router.post('/signup', signupController.postUser);
 
 router.post('/login', signupController.login);
 
-router.post('/chat', userAuth.authenticate, chatController.postChat);
+router.post('/chat/:groupId', userAuth.authenticate, chatController.postChat);
 
-router.get('/chat', userAuth.authenticate, chatController.getChat);
+router.get('/chat/:groupId', userAuth.authenticate, chatController.getChat);
 
 router.get('/chatuser/:id', chatController.getUserName);
+
+router.get('/getAllGroups', chatController.getAllGroups);
+
+router.get('/joingroup/:groupId', userAuth.authenticate, chatController.joinGroup);
+
+router.get('/getGroups', userAuth.authenticate, chatController.getGroups);
+
+router.post('/creategroup', userAuth.authenticate, chatController.createGroup);
 
 module.exports = router; 
