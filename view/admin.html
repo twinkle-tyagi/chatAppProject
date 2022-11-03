@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+</head>
+<body>
+    <h1 style="text-align: center;"> Amin page</h1>
+
+    <ul id="admin-groups">
+        <label> Groups </label>
+    </ul>
+
+
+</body>
+</html>
+
+<script defer>
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const groups = await axios.get('http://localhost:3000/getGroups', {headers: {Authorization: token}});
+            console.log("groups are", groups);
+            showGroups(groups);
+        }
+        catch(err) {
+            console.log(err);
+        }
+    });
+
+function showGroups(groups) {
+    const parent = document.getElementById('admin-groups');
+
+    for(var i=0; i< groups.data.length; i++) {
+        const child = document.createElement('li');
+        child.setAttribute('id', groups.data[i].id);
+        child.innerHTML = `${groups.data[i].groupName} <button onclick="showDetails(${groups.data[i].id})"> show details </button> <button type="button" onclick = "delete(${groups.data[i].id})" > delete group </button> <br>`
+        parent.append(child);
+    }
+}
+
+function showDetails(groupId) {
+    localStorage.setItem('groupId', groupId);
+    window.location.href = "./group.html";
+}
+</script>

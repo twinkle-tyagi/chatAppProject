@@ -234,7 +234,11 @@ async function createGroup() {
     try {
         var gName = document.getElementById('group-name').value;
         console.log(gName);
-        var group = await axios.post('http://localhost:3000/creategroup', {gName}, {headers: {Authorization: token}});
+         var obj = {
+            gName: gName,
+            isAdmin: true
+         }
+        var group = await axios.post('http://localhost:3000/creategroup', obj, {headers: {Authorization: token}});
     }
     catch(err) {
         console.log(err);

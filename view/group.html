@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+
+    <script src="group.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+</head>
+<body>
+    <label for="search-user"> search user name </label>
+    <input type="text" id="search-user" name="search-user">
+    <button type="button" onclick="searchUser()"> Search </button>
+    
+    <div>
+        <ul id="group-users">
+
+        </ul>
+    </div>
+
+    <div>
+        <ul id="user-registered">
+            <label> users registered in group</label>
+
+        </ul>
+    </div>
+
+</body>
+</html>

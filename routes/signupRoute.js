@@ -7,7 +7,9 @@ const userAuth = require('../middleware/authenticate');
 
 const router = express.Router();
 
-router.get('/users', );
+router.get('/userbyid', signupController.getUserById);
+
+router.get('/user', signupController.getUser);
 
 router.post('/signup', signupController.postUser);
 
@@ -21,10 +23,19 @@ router.get('/chatuser/:id', chatController.getUserName);
 
 router.get('/getAllGroups', chatController.getAllGroups);
 
+router.get('/usersRegistered/:groupId', chatController.usersRegistered);
+
 router.get('/joingroup/:groupId', userAuth.authenticate, chatController.joinGroup);
 
 router.get('/getGroups', userAuth.authenticate, chatController.getGroups);
 
 router.post('/creategroup', userAuth.authenticate, chatController.createGroup);
+
+router.post('/addtogroup', chatController.addToGroup);
+
+router.delete('/deleteuser/:userId/', chatController.removeGroupUser);
+
+router.put('/makeAdmin/:userId/', chatController.makeAdmin);
+
 
 module.exports = router; 

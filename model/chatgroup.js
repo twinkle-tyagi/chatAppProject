@@ -8,7 +8,8 @@ const chatgroup = sequelize.define('chatgroup', {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
-    }
+    },
+    isAdmin: Sequelize.BOOLEAN
 });
 
 module.exports = chatgroup;

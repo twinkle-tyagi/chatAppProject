@@ -7,6 +7,32 @@ function generateAccessToken(id) {
     return jwt.sign({id: id}, process.env.JWT_SECRET_KEY);
 }
 
+exports.getUserById = async (req, res) => {
+    try {
+        const userId = +req.query.user;
+        //console.log(userId);
+        const user = await User.findAll({where: {id: userId}});
+        //console.log(user);
+        res.status(200).json(user);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
+
+exports.getUser = async (req, res, next) => {
+    try {
+        const username = req.query.user;
+        //console.log(username);
+        const user = await User.findAll({where: {name: username}});
+        //console.log(user);
+        res.status(200).json(user);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
+
 exports.postUser = async (req, res, next) => {
     try {
         const email = req.body.email;
