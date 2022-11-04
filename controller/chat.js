@@ -211,7 +211,6 @@ exports.makeAdmin = async (req, res) => {
                     {usersignupId: user[0].usersignupId}
                     )});
         }
-
     }
     catch(err) {
 

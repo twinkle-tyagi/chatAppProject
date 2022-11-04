@@ -91,11 +91,11 @@ setInterval(() => {
 window.addEventListener('DOMContentLoaded', () => {
     try {
         const groupId = localStorage.getItem('groupId');
-
+        chatsArray = [];
+        localStorage.removeItem('chat')
         getChats(groupId);
         const gParent = document.getElementById('group-div');
         grouping(gParent);
-
     }
     catch(err) {
         console.log(err);
@@ -175,7 +175,6 @@ function appendGroup(groups, gParent) {
     gParent.addEventListener('click', (e) => {
         const groupId = e.target.id;
 
-
         localStorage.setItem('groupId', groupId);
 
         console.log("id is", groupId);
@@ -190,6 +189,8 @@ async function joinedGroups() {
        
         const gParent = document.getElementById('user-group-div');
         gParent.innerHTML = "";
+
+        localStorage.removeItem('chat');
         grouping(gParent);
         appendGroup(groups, gParent);
     }
@@ -202,9 +203,10 @@ async function joinGroup(groupId) {
     try {
         var group = axios.get(`http://localhost:3000/joingroup/${groupId}`, {headers: {Authorization: token}});
         
-        localStorage.removeItem('chat');
         joinedGroups();
-        console.log("/////////////////////////////")
+        //console.log("/////////////////////////////")
+        localStorage.removeItem('chat');
+        chatsArray = [];
         getChats(groupId);
     }
     catch(err) {
