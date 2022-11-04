@@ -15,7 +15,7 @@ async function chat() {
     try {
         const groupId = localStorage.getItem('groupId');
         const msg = document.getElementById('chat-text').value;
-        const result = await axios.post(`http://localhost:3000/chat/${groupId}`, {msg: msg}, {headers: {Authorization: token}});
+        const result = await axios.post(`http://52.199.32.164:3000/chat/${groupId}`, {msg: msg}, {headers: {Authorization: token}});
         console.log(result);
         const name = localStorage.getItem("name");
         
@@ -117,7 +117,7 @@ async function getChats(groupId) {
         }
 
         let arr = [];
-        const chats = await axios.get(`http://localhost:3000/chat/${groupId}/?msg=${lastId}`, {headers: {Authorization: token}});
+        const chats = await axios.get(`http://52.199.32.164:3000/chat/${groupId}/?msg=${lastId}`, {headers: {Authorization: token}});
         
         console.log(chats, lastId);
 
@@ -153,7 +153,7 @@ async function getChats(groupId) {
 async function grouping(gParent) {
     try {
         // const 
-        const groups = await axios.get('http://localhost:3000/getAllGroups');
+        const groups = await axios.get('http://52.199.32.164:3000/getAllGroups');
 
         appendGroup(groups, gParent);
     }
@@ -184,7 +184,7 @@ function appendGroup(groups, gParent) {
 
 async function joinedGroups() {
     try {
-        var groups = axios.get(`http://localhost:3000/getGroups`, {headers: {Authorization: token}});
+        var groups = axios.get(`http://52.199.32.164:3000/getGroups`, {headers: {Authorization: token}});
         console.log(groups);
        
         const gParent = document.getElementById('user-group-div');
@@ -201,7 +201,7 @@ async function joinedGroups() {
 
 async function joinGroup(groupId) {
     try {
-        var group = axios.get(`http://localhost:3000/joingroup/${groupId}`, {headers: {Authorization: token}});
+        var group = axios.get(`http://52.199.32.164:3000/joingroup/${groupId}`, {headers: {Authorization: token}});
         
         joinedGroups();
         //console.log("/////////////////////////////")
@@ -217,7 +217,7 @@ async function joinGroup(groupId) {
 
 async function getUser(id) {
     try {
-        const name = await axios.get(`http://localhost:3000/chatuser/${id}`);
+        const name = await axios.get(`http://52.199.32.164:3000/chatuser/${id}`);
         //console.log(name.data);
         return name.data;
     }
@@ -240,7 +240,7 @@ async function createGroup() {
             gName: gName,
             isAdmin: true
          }
-        var group = await axios.post('http://localhost:3000/creategroup', obj, {headers: {Authorization: token}});
+        var group = await axios.post('http://52.199.32.164:3000/creategroup', obj, {headers: {Authorization: token}});
     }
     catch(err) {
         console.log(err);

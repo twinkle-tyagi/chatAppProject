@@ -12,7 +12,7 @@ async function login(e) {
 
         //console.log(obj);
 
-        const result = await axios.post(`http://localhost:3000/login`, obj);
+        const result = await axios.post(`http://52.199.32.164:3000/login`, obj);
         console.log(result);
         if(result.status == 200) {
 

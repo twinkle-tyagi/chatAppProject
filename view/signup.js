@@ -16,7 +16,7 @@ async function signup(e) {
 
         console.log(obj);
 
-        var result = await axios.post(`http://localhost:3000/signup`, obj);
+        var result = await axios.post(`http://52.199.32.164:3000/signup`, obj);
         //console.log(result);
 
         if(result.status == 200) {

@@ -24,7 +24,7 @@
     window.addEventListener('DOMContentLoaded', async () => {
         try {
             const token = localStorage.getItem('token');
-            const groups = await axios.get('http://localhost:3000/getGroups', {headers: {Authorization: token}});
+            const groups = await axios.get('http://52.199.32.164:3000/getGroups', {headers: {Authorization: token}});
             console.log("groups are", groups);
             showGroups(groups);
         }

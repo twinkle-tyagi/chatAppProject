@@ -7,7 +7,7 @@ const groupId = localStorage.getItem('groupId');
 async function searchUser() {
     try {
         const username = document.getElementById('search-user').value;
-        const user = await axios.get(`http://localhost:3000/user/?user=${username}`);
+        const user = await axios.get(`http://52.199.32.164:3000/user/?user=${username}`);
 
         if(user == undefined || user == []) {
             alert("user not found");
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', async () => {
        
     try {
         const groupId = localStorage.getItem('groupId');
-        const usersRegistered = await axios.get(`http://localhost:3000/usersRegistered/${groupId}`);
+        const usersRegistered = await axios.get(`http://52.199.32.164:3000/usersRegistered/${groupId}`);
         const parent = document.getElementById('user-registered');
         
         const arr = [];
@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
             arr.push(usersRegistered.data[i].usersignupId);
 
-            const user = await axios.get(`http://localhost:3000/userbyid/?user=${usersRegistered.data[i].usersignupId}`);
+            const user = await axios.get(`http://52.199.32.164:3000/userbyid/?user=${usersRegistered.data[i].usersignupId}`);
             showUser(user, parent);
         }
         localStorage.setItem('registered-users', arr);
@@ -63,7 +63,7 @@ async function makeAdmin(id) {
         
         for(var i=0; i<arr.length; i++) {
             if(arr[i] == id) {
-                const res = await axios.put(`http://localhost:3000/makeAdmin/${id}/?groupId=${groupId}`)
+                const res = await axios.put(`http://52.199.32.164:3000/makeAdmin/${id}/?groupId=${groupId}`)
             }
         }
     }
@@ -87,7 +87,7 @@ async function addToGroup(id) {
             groupId: groupId
         }
         //console.log(obj);
-        const result = await axios.post('http://localhost:3000/addtogroup', obj);
+        const result = await axios.post('http://52.199.32.164:3000/addtogroup', obj);
         location.reload();
         //console.log(result);
     }
@@ -98,7 +98,7 @@ async function addToGroup(id) {
 
 async function removeUser(id) {
     try {
-        const result = axios.delete(`http://localhost:3000/deleteuser/${id}/?groupId=${groupId}`);
+        const result = axios.delete(`http://52.199.32.164:3000/deleteuser/${id}/?groupId=${groupId}`);
         location.reload()
     }
     catch(err) {
